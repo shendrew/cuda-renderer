@@ -5,6 +5,7 @@
 #include <initializer_list>
 #include <cmath>
 #include <vector>
+#include <chrono>
 #include <SDL2/SDL.h>
 
 #endif // STD_INCLUDES_H

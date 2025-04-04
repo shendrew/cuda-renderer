@@ -121,6 +121,8 @@ int main(int argc, char* argv[]) {
     SDL_Event event;
     Camera* cam = new Camera(0, 0, 0);
 
+    int counter = 0;
+
     while (running) {
         // Handle events
         while (SDL_PollEvent(&event)) {
@@ -146,6 +148,9 @@ int main(int argc, char* argv[]) {
             }
         }
 
+        // timer
+        auto timer_start = std::chrono::high_resolution_clock::now();
+
         // Clear the screen
         SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
         SDL_RenderClear(renderer);
@@ -159,23 +164,31 @@ int main(int argc, char* argv[]) {
             {20, 20, -40, 1}, {20, -20, -40, 1}, {-20, -20, -40, 1}, {-20, 20, -40, 1}
         };
 
-        for (auto &vertex : cube) {
-            Vec4 relative_vec = vertex - cam->position;
-            Vec4 projection_vec = ProjectionMat() * relative_vec;
-            Vec4 perspective_vec = projection_vec * (1 / projection_vec.vw);
+        for (int i=1; i<100; i++) {
+            for (auto &vertex : cube) {
+                Vec4 relative_vec = vertex - cam->position;
+                relative_vec.vx += 10*i;
+                Vec4 projection_vec = ProjectionMat() * relative_vec;
+                Vec4 perspective_vec = projection_vec * (1 / projection_vec.vw);
 
-            float x_screen = WINDOW_WIDTH / 2 * perspective_vec.vx + WINDOW_WIDTH / 2;
-            float y_screen = WINDOW_HEIGHT / 2 * perspective_vec.vy + WINDOW_HEIGHT / 2;
+                float x_screen = WINDOW_WIDTH / 2 * perspective_vec.vx + WINDOW_WIDTH / 2;
+                float y_screen = WINDOW_HEIGHT / 2 * perspective_vec.vy + WINDOW_HEIGHT / 2;
 
-            DrawCircle(renderer, x_screen, y_screen, 5);
-
-            // projection.print();
-            // std::cout << " " << std::endl;
+                DrawCircle(renderer, x_screen, y_screen, 5);
+            }
         }
 
 
         // Present the renderer
         SDL_RenderPresent(renderer);
+
+        auto timer_end = std::chrono::high_resolution_clock::now();
+        std::chrono::duration<double> latency = timer_end - timer_start;
+
+        if (counter == 0) {
+            std::cout << 1/latency.count() << std::endl; 
+        }
+        counter = (counter+1)%20;
     }
 
     // Cleanup
