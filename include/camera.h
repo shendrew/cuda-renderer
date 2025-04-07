@@ -1,7 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "./geometry.h"
+#include "datatype.h"
 
 class Camera {
 public:

@@ -1,7 +1,7 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
-#include "./std_includes.h"
+#include "std_includes.h"
 
 /*
 Base data type that holds most coordinate info.

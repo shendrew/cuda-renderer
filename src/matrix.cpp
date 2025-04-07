@@ -1,4 +1,4 @@
-#include "../include/matrix.h"
+#include "matrix.h"
 
 Matrix::Matrix() : rows(0), cols(0), m_data() {}
 

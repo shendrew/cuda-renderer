@@ -1,4 +1,4 @@
-#include "../include/render.h"
+#include "render.h"
 
 // void testMatrix() {
 //     Matrix a = {{1, 2, 3}, {4, 5, 6}};
@@ -30,11 +30,6 @@
 #define WINDOW_WIDTH 1200
 #define WINDOW_HEIGHT 800
 
-// vertex to screen
-//  PERSPECTIVE_PROJECTION * VIEW_TRANSFORM (relative to cam) * MODEL_TRANSFORM (object attr) * VERTEX
-//*  then clip to screen
-//*  PERSPECTIVE DIVISION (map to normalize device location)
-//*  SCREEN TRANSFORM     (translate to absolute px location)
 
 Matrix ProjectionMat() {
     // need to clip far distance as depths become asymptotic -> reduces z-fighting

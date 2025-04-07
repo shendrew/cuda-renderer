@@ -1,5 +1,10 @@
-#include "../include/matrix.h"
-#include "../include/geometry.h"
-#include "../include/camera.h"
+#ifndef RENDER_H
+#define RENDER_H
 
-#include "./std_includes.h"
+#include "matrix.h"
+#include "datatype.h"
+#include "camera.h"
+
+#include "std_includes.h"
+
+#endif // RENDER_H
