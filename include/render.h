@@ -2,8 +2,8 @@
 #define RENDER_H
 
 #include "matrix.h"
-#include "datatype.h"
 #include "camera.h"
+#include "object.h"
 
 #include "std_includes.h"
 
