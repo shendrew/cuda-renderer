@@ -7,16 +7,18 @@
 Base data type that holds most coordinate info.
 */
 class Matrix {
+    size_t rows;
+    size_t cols;
+
 public:
-    const size_t rows;
-    const size_t cols;
-    
     // ctor
     Matrix(size_t r, size_t c);
     Matrix(std::initializer_list<float> vec);
     Matrix(std::initializer_list<std::initializer_list<float>> mat);
     Matrix(const Matrix& other);
+    Matrix& operator=(const Matrix& other);
     Matrix(Matrix&& other);
+    Matrix& operator=(Matrix&& other);
     // dtor
     ~Matrix();
 
@@ -47,18 +49,6 @@ using Vec4 = Matrix;
 #define vy at(1, 0)
 #define vz at(2, 0)
 #define vw at(3, 0)
-
-/* inline Matrix Ortho(float left, float right, float bottom, float top, float nearVal, float farVal) {
-    Matrix result(4, 4); // Starts as identity
-    result[0][0] = 2.0f / (right - left);
-    result[1][1] = 2.0f / (top - bottom);
-    result[2][2] = -2.0f / (farVal - nearVal);
-    result[3][0] = -(right + left) / (right - left);
-    result[3][1] = -(top + bottom) / (top - bottom);
-    result[3][2] = -(farVal + nearVal) / (farVal - nearVal);
-    result[3][3] = 1.0f;
-    return result;
-} */
 
 inline Matrix Ortho(float left, float right, float bottom, float top, float nearVal, float farVal) {
     Matrix result(4, 4); // Assuming Matrix constructor initializes to identity or zeros.

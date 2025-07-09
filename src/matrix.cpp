@@ -27,14 +27,36 @@ Matrix::Matrix(std::initializer_list<std::initializer_list<float>> mat) : rows{m
     }
 }
 
+// copy
 Matrix::Matrix(const Matrix& other) : rows{other.rows}, cols{other.cols}, m{new float[rows * cols]} {
     std::copy(other.m, other.m + (rows * cols), m);
 }
 
+Matrix& Matrix::operator=(const Matrix& other) {
+    if (this == &other) return *this; // self-assignment check
+
+    delete[] m;
+    rows = other.rows;
+    cols = other.cols;
+    m = new float[rows * cols];
+    std::copy(other.m, other.m + (rows * cols), m);
+    return *this;
+}
+
+// move
 Matrix::Matrix(Matrix&& other) : rows{other.rows}, cols{other.cols}, m{other.m} {
     other.m = nullptr; // avoid double deletion
 }
 
+Matrix& Matrix::operator=(Matrix&& other) {
+    if (this == &other) return *this; // self-assignment check
+
+    Matrix temp(other);
+    std::swap(rows, temp.rows);
+    std::swap(cols, temp.cols);
+    std::swap(m, temp.m);
+    return *this;
+}
 
 Matrix::~Matrix() {
     delete[] m;
