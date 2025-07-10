@@ -6,6 +6,7 @@ add_executable(cuda_renderer
     src/matrix.cpp
     src/camera.cpp
     src/object.cpp
+    src/pipeline/cpu_object_manager.cpp
 
 )
 
@@ -22,17 +23,28 @@ find_package(OpenGL REQUIRED)
 
 # Find CUDA (This will be crucial for CUDA development)
 # This module sets up necessary variables and imported targets for CUDA.
-find_package(CUDA)
-if(CUDA_FOUND)
+option(ENABLE_CUDA "Enable CUDA support" ON)
+
+if(ENABLE_CUDA)
+    enable_language(CUDA)
+endif()
+
+find_package(CUDAToolkit)
+if(ENABLE_CUDA AND CUDAToolkit_FOUND)
     message(STATUS "CUDA toolkit found! Enabling CUDA support.")
 
     set_property(TARGET cuda_renderer PROPERTY CUDA_STANDARD 17)
     set_property(TARGET cuda_renderer PROPERTY CUDA_STANDARD_REQUIRED YES)
 
-    # list(APPEND CUDA_SOURCES)
-    list(APPEND CUDA_LIBS CUDA::cudart)
+    message(STATUS "Adding CUDA pipeline sources")
+    # target_sources(cuda_renderer PRIVATE
+    #     src/pipeline/cuda_object_manager.cpp
+    #     src/pipeline/cuda/vertex_shader.cu
+    # )
+    target_compile_definitions(cuda_renderer PRIVATE USE_CUDA)
+    target_link_libraries(cuda_renderer PRIVATE CUDA::cudart)
 else()
-    message(STATUS "CUDA toolkit NOT found! Skipping.")
+    message(STATUS "Skipping CUDA support, toolkit not found or disabled.")
 endif()
 
 # --- Link Libraries and Include Directories ---

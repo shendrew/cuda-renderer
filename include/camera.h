@@ -2,17 +2,15 @@
 #define CAMERA_H
 
 #include "matrix.h"
+#include "common.h"
 
-class Camera {
-public:
-    Camera(float x, float y, float z);
+struct Camera {
+    Camera(float x, float y, float z, float fov);
 
     Vec4 position;
     // Vec4 rotation;
-
-    //! want to use matrix directly
-    // Vec3 position;
-    // Quarternion rotation;
+    float fov;
+    Matrix perspectiveMat;
 };
 
 #endif  //CAMERA_H

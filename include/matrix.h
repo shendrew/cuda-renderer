@@ -37,6 +37,11 @@ public:
         return m;
     }
 
+    inline float& vx() { return this->at(0, 0); }
+    inline float& vy() { return this->at(1, 0); }
+    inline float& vz() { return this->at(2, 0); }
+    inline float& vw() { return this->at(3, 0); }
+
 protected:
     float *m; // pointer to 2d array in a single block m[i * cols + j]
 };
@@ -45,10 +50,6 @@ using Vec2 = Matrix;
 using Vec3 = Matrix;
 using Vec4 = Matrix;
 
-#define vx at(0, 0)
-#define vy at(1, 0)
-#define vz at(2, 0)
-#define vw at(3, 0)
 
 inline Matrix Ortho(float left, float right, float bottom, float top, float nearVal, float farVal) {
     Matrix result(4, 4); // Assuming Matrix constructor initializes to identity or zeros.

@@ -1,8 +1,8 @@
 #ifndef OBJECT_H
 #define OBJECT_H
 
-#include <std_includes.h>
-#include <matrix.h>
+#include "std_includes.h"
+#include "matrix.h"
 #include <sstream>
 
 struct Object {
