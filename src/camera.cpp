@@ -2,8 +2,8 @@
 
 Camera::Camera(float x, float y, float z, float fov)
 : position({x, y, z, 0}), fov(fov), perspectiveMat(Matrix(4, 4)) {
-    const float NEAR = 10.0f;
-    const float FAR = 50.0f;
+    const float NEAR = 1.0f;
+    const float FAR = 100.0f;
     const float FOV = fov * M_PI / 180.0;     // degree to radian
     const float aspect = (float)WINDOW_WIDTH / (float)WINDOW_HEIGHT;
 

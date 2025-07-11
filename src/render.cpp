@@ -157,7 +157,7 @@ int main(int argc,  char* argv[]) {
     // --- Render States ---
     bool running = true;
     SDL_Event event;
-    Camera* cam = new Camera(0, 0, 0, CAMERA_FOV);
+    Camera* cam = new Camera(0, 2, 10, CAMERA_FOV);
     int counter = 0;
 
     // Instantiate ObjectManager
