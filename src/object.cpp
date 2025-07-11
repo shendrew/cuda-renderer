@@ -20,9 +20,9 @@ std::istream& operator>>(std::istream& in, Object& obj) {
             std::vector<int> face;
             while (iss >> v) {
                 // get vertex indices from string
-                size_t pos = v.find('/');
-                if (pos != std::string::npos) {
-                    v = v.substr(0, pos); // ignore texture and normal indices
+                size_t ind = v.find('/');
+                if (ind != std::string::npos) {
+                    v = v.substr(0, ind); // ignore texture and normal indices
                 }
                 face.push_back(std::stoi(v) - 1); // convert to zero-based index
             }
