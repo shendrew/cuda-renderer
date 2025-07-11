@@ -37,10 +37,10 @@ if(ENABLE_CUDA AND CUDAToolkit_FOUND)
     set_property(TARGET cuda_renderer PROPERTY CUDA_STANDARD_REQUIRED YES)
 
     message(STATUS "Adding CUDA pipeline sources")
-    # target_sources(cuda_renderer PRIVATE
-    #     src/pipeline/cuda_object_manager.cpp
-    #     src/pipeline/cuda/vertex_shader.cu
-    # )
+    target_sources(cuda_renderer PRIVATE
+        src/pipeline/cuda/vertex_shader.cu
+        src/pipeline/cuda_object_manager.cpp
+    )
     target_compile_definitions(cuda_renderer PRIVATE USE_CUDA)
     target_link_libraries(cuda_renderer PRIVATE CUDA::cudart)
 else()
