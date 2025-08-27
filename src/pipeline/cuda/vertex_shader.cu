@@ -14,10 +14,11 @@ __global__ void perspectiveKernel(const cuda_vec4* in, float* out, int n,
     float y = proj4x4[1]*v.vx + proj4x4[5]*v.vy + proj4x4[9]*v.vz + proj4x4[13];
     float w = proj4x4[3]*v.vx + proj4x4[7]*v.vy + proj4x4[11]*v.vz + proj4x4[15];
     if (w>0.0f) {
-        out[2*idx+0] = x/w;
-        out[2*idx+1] = y/w;
+        out[2*idx+0] = (x/w) * (WINDOW_WIDTH / 2.0f);
+        out[2*idx+1] = (y/w) * (WINDOW_HEIGHT / 2.0f);
     } else {
-        out[2*idx+0] = 0.0f;
-        out[2*idx+1] = 0.0f;
+        // draw out of view
+        out[2*idx+0] = 9999999.0f;
+        out[2*idx+1] = 9999999.0f;
     }
 }
