@@ -33,7 +33,7 @@ public:
     Matrix operator*(const float num);
     Matrix operator*(const Matrix& other);
     
-    const float* value_ptr() const {
+    float* value_ptr() const {
         return m;
     }
 

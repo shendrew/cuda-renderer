@@ -6,6 +6,7 @@
 #include "pipeline/cpu_object_manager.h"
 #ifdef USE_CUDA
   #include <cuda_gl_interop.h>
+  #include "pipeline/cuda_object_manager.h"
 #endif
 
 // --- Shader Source Code (Unchanged) ---
@@ -75,11 +76,13 @@ void initOpenGL(GLuint& shaderProgram, GLuint& VAO, GLuint& VBO) {
     glBindVertexArray(VAO);
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
 
+    // Allocate buffer memory (for dynamic data, use GL_DYNAMIC_DRAW)
+    const size_t max_vertices = 1000000;
+    glBufferData(GL_ARRAY_BUFFER, max_vertices * 2 * sizeof(float), nullptr, GL_DYNAMIC_DRAW);
+
     // Set VBO access pattern
     // index, # of components, type, normalized, block size, offset)
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), (void*)0);
-    
-    // Enable access to the VBO
     glEnableVertexAttribArray(0);
 
     // Unbind buffer and VAO
@@ -157,11 +160,16 @@ int main(int argc,  char* argv[]) {
     // --- Render States ---
     bool running = true;
     SDL_Event event;
-    Camera* cam = new Camera(0, 2, 10, CAMERA_FOV);
+    std::unique_ptr<Camera> cam = std::make_unique<Camera>(0, 2, 10, CAMERA_FOV);
     int counter = 0;
 
     // Instantiate ObjectManager
-    CPUObjectManager manager(obj.vertices, cam, VBO, VAO);
+    std::unique_ptr<ObjectManager> display;
+#ifdef USE_CUDA
+    display = std::make_unique<CUDAObjectManager>(obj.vertices, *cam, VBO, VAO);
+#else
+    display = std::make_unique<CPUObjectManager>(obj.vertices, *cam, VBO, VAO);
+#endif
 
     // --- Render Loop ---
     while (running) {
@@ -180,7 +188,7 @@ int main(int argc,  char* argv[]) {
         auto timer_start = std::chrono::high_resolution_clock::now();
         
         // write to point data to buffer
-        manager.render();
+        display->render();
         // update display buffer to window
         SDL_GL_SwapWindow(window);
 
@@ -191,7 +199,6 @@ int main(int argc,  char* argv[]) {
     }
 
     // --- Cleanup ---
-    delete cam;
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
     glDeleteProgram(shaderProgram);

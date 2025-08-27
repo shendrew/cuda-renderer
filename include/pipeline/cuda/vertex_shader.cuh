@@ -3,14 +3,10 @@
 
 #include <cuda_runtime.h>
 #include "common.h"
+#include "pipeline/cuda/types.cuh"
 
-#ifdef __cplusplus
-extern "C" {
-struct v4 { float vx,vy,vz,vw; };
-__global__ void projectKernel(const v4* in, float* out, int n,
+__global__ void perspectiveKernel(const cuda_vec4* in, float* out, int n,
                               const float* proj4x4,
                               float camx, float camy, float camz); 
-}
-#endif // __cplusplus
 
 #endif // VERTEX_SHADER_CUH

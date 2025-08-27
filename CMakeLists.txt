@@ -6,6 +6,7 @@ add_executable(cuda_renderer
     src/matrix.cpp
     src/camera.cpp
     src/object.cpp
+
     src/pipeline/cpu_object_manager.cpp
 
 )
@@ -14,6 +15,10 @@ add_executable(cuda_renderer
 set_property(TARGET cuda_renderer PROPERTY CXX_STANDARD 17)
 set_property(TARGET cuda_renderer PROPERTY CXX_STANDARD_REQUIRED YES) # Enforce C++17
 
+# Enable debug symbols
+set(CMAKE_BUILD_TYPE "Debug") # Sets the build type to Debug
+set(CMAKE_CXX_FLAGS_DEBUG "$ENV{CXXFLAGS} -O0 -g")
+set(CMAKE_CXX_FLAGS_RELEASE "$ENV{CXXFLAGS} -O3")
 
 # Find SDL2
 find_package(SDL2 REQUIRED)
@@ -40,6 +45,7 @@ if(ENABLE_CUDA AND CUDAToolkit_FOUND)
     target_sources(cuda_renderer PRIVATE
         src/pipeline/cuda/vertex_shader.cu
         src/pipeline/cuda_object_manager.cpp
+        src/pipeline/cuda/cuda_bridge.cu
     )
     target_compile_definitions(cuda_renderer PRIVATE USE_CUDA)
     target_link_libraries(cuda_renderer PRIVATE CUDA::cudart)
